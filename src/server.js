@@ -46,6 +46,7 @@ log.info(`Opened serial port [${serial}]`);
 const parser = new Readline({ delimiter: '\n' });
 serialPort.pipe(parser);
 let receivedSerialData = false;
+let lastDataReceived = 0;
 parser.on('data', function (data) {
 
     // Example of values: http://lechacal.com/wiki/index.php?title=RPICT7V1_v2.0
@@ -55,6 +56,7 @@ parser.on('data', function (data) {
     // Values from sensor are returned with space/tab between each value.
     const values = data.split(/[ ,]+/);
     let count = 0;
+    lastDataReceived = new Date().getTime();
 
     // Read sensor mapping from JSON file.
     Object.keys(deviceMappingJson).forEach(function(key) {
@@ -146,7 +148,21 @@ function createHASensor(name, unit_of_measurement, icon) {
             "name": "${name}",
             "unit_of_measurement": "${unit_of_measurement}",
             "state_topic": "${discoveryPrefix}/sensor/${identifier}_${name}",
-            "icon": "mdi:${icon}"
+            "icon": "mdi:${icon}",
+            "unique_id": "${identifier}_${name}",
+            "device": {
+                "name": "LeChacal Energy Monitor",
+                "identifiers": ["LeChacal", "Energy", "Monitor"],
+                "manufacturer": "LeChacal",
+                "model": "${deviceMapping.replace(".json", "")}",
+                "sw_version": "latest",
+                "via_device": "docker-lechacal-homeassistant"
+            },
+            "availability": {
+                "topic": "lechacal/${identifier}/availability",
+                "payload_available": "online",
+                "payload_not_available": "offline"
+            }
         }`, 
         {
             retain: true,
@@ -167,4 +183,19 @@ function createHASensors() {
     Object.keys(deviceMappingJson).forEach(function(key) {
         createHASensor(key, deviceMappingJson[key].unit_of_measurement, deviceMappingJson[key].icon)
     });
+    mqttClient.publish(`lechacal/${identifier}/availability`, "online");
 }
+
+function updateAvailability() {
+    let currentTime = new Date().getTime();
+    let millisSinceLastData = currentTime - lastDataReceived;
+    let available;
+    if(millisSinceLastData < (1000 * 60 * 5)) {
+        available = "online"
+    } else {
+        available = "offline"
+    }
+    mqttClient.publish(`lechacal/${identifier}/availability`, available);
+}
+
+setTimeout(updateAvailability, 1000 * 60 * 5);
