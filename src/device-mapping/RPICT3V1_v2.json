@@ -43,6 +43,5 @@
         "type": "float",
         "unit_of_measurement": "pf",
         "icon": "sine-wave"
-    },
-}
+    }
 }
