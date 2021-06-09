@@ -41,7 +41,7 @@
     },
     "PowerFactor2": {
         "type": "float",
-        "unit_of_measurement": "pf",
+        "unit_of_measurement": "pF",
         "icon": "sine-wave"
     }
 }
