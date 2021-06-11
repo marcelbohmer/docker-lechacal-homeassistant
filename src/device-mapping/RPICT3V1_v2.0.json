@@ -9,6 +9,11 @@
         "unit_of_measurement": "W",
         "icon": "flash"
     },
+    "Apparentpower1": {
+        "type": "float",
+        "unit_of_measurement": "W",
+        "icon": "flash"
+    },
     "Irms1": {
         "type": "float",
         "unit_of_measurement": "mA",
@@ -29,6 +34,11 @@
         "unit_of_measurement": "W",
         "icon": "flash"
     },
+    "Apparentpower2": {
+        "type": "float",
+        "unit_of_measurement": "W",
+        "icon": "flash"
+    },
     "Irms2": {
         "type": "float",
         "unit_of_measurement": "mA",
@@ -40,6 +50,31 @@
         "icon": "sine-wave"
     },
     "PowerFactor2": {
+        "type": "float",
+        "unit_of_measurement": "pF",
+        "icon": "sine-wave"
+    },
+    "Realpower3": {
+        "type": "float",
+        "unit_of_measurement": "W",
+        "icon": "flash"
+    },
+    "Apparentpower3": {
+        "type": "float",
+        "unit_of_measurement": "W",
+        "icon": "flash"
+    },
+    "Irms3": {
+        "type": "float",
+        "unit_of_measurement": "mA",
+        "icon": "current-ac"
+    },
+    "Vrms3": {
+        "type": "float",
+        "unit_of_measurement": "V",
+        "icon": "sine-wave"
+    },
+    "PowerFactor3": {
         "type": "float",
         "unit_of_measurement": "pF",
         "icon": "sine-wave"
