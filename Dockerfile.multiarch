@@ -1,4 +1,4 @@
-FROM --platform=${TARGETPLATFORM:-linux/amd64} node:12-alpine
+FROM --platform=${TARGETPLATFORM:-linux/arm} node:12-alpine
 
 ARG BUILD_DATE
 ARG VERSION
