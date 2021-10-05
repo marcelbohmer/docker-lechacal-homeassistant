@@ -16,7 +16,7 @@ if (mqttPassword) {
 log.info(`Connecting to MQTT broker [${mqttUrl}]`);
 log.debug(`MQTT options [${JSON.stringify(mqttOptions)}]`);
 try {
-    client = mqtt.connect(mqttUrl, options);
+    client = mqtt.connect(mqttUrl, mqttOptions);
     log.info(`Connected to MQTT broker [${mqttOptions}]`);
 } catch (e) {
     log.error(`MQTT connection error [${e.message}]`);
