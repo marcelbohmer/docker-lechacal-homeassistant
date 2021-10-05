@@ -27,7 +27,7 @@ try {
         client.on('connect', () => {
             // Workaround to avoid reconnect issue (see https://github.com/mqttjs/MQTT.js/issues/1213)
             // eslint-disable-next-line no-underscore-dangle
-            client._client.options.properties = {};
+            // client._client.options.properties = {};
             createHASensors();
         });
         client.on('reconnect', () => {
