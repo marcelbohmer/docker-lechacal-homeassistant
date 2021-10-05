@@ -12,36 +12,15 @@ if (mqttUser) {
 if (mqttPassword) {
     mqttOptions.password = mqttPassword;
 }
-
-log.info(`Connecting to MQTT broker [${mqttUrl}]`);
+log.info(`Connecting to MQTT broker [${mqttUrl}]...`);
 log.debug(`MQTT options [${JSON.stringify(mqttOptions)}]`);
-try {
-    client = mqtt.connect(mqttUrl, mqttOptions);
-    log.info(`Connected to MQTT broker [${mqttOptions}]`);
-} catch (e) {
-    log.error(`MQTT connection error [${e.message}]`);
-    throw e;
-}
-try {
-    if (client) {
-        client.on('connect', () => {
-            // Workaround to avoid reconnect issue (see https://github.com/mqttjs/MQTT.js/issues/1213)
-            // eslint-disable-next-line no-underscore-dangle
-            // client._client.options.properties = {};
-            createHASensors();
-        });
-        client.on('reconnect', () => {
-            log.info('Reconnecting to the MQTT broker...');
-            createHASensors();
-        });
-        client.on('error', (err) => {
-            log.warn(`Error when publishing to the mqtt broker (${err.message})`);
-        });
-    }
-} catch (e) {
-    log.error(`MQTT connection error [${e.message}]`);
-    throw e;
-}
+const mqttClient  = mqtt.connect(mqttUrl, mqttOptions);
+
+// HA sensors initial creation
+mqttClient.on('connect', function () {
+    log.info(`Connected to MQTT broker [${mqttUrl}].`);
+    createHASensors();
+})
 
 // Device mapping loading
 log.info(`Loading device mapping [${deviceMapping}]...`);
